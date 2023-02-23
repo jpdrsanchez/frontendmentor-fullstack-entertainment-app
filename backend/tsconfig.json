@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "resolveJsonModule": true,
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
@@ -18,13 +17,14 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
+    "resolveJsonModule": true,
     "paths": {
-      "@domain/*": ["src/domain/*"],
-      "@infra/*": ["src/infra/*"],
-      "@application/*": ["src/application/*"],
-      "@core/*": ["src/core/*"],
-      "@config/*": ["src/config/*"],
-      "@test/*": ["test/*"]
-    },
+      "@core/*":["./src/core/*"],
+      "@domain/*":["./src/domain/*"],
+      "@application/*":["./src/application/*"],
+      "@config/*":["./src/config/*"],
+      "@infra/*":["./src/infra/*"],
+      "@test/*":["./test/*"]
+    }
   }
 }
