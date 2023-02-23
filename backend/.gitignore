@@ -1,6 +1,7 @@
 # project
 /uploads
 /tmp
+.env
 
 # compiled output
 /dist
