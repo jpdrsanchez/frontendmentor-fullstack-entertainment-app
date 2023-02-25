@@ -67,6 +67,6 @@ export class Video extends Entity<VideoProps> {
   }
 
   public get updatedAt() {
-    return this._props.createdAt
+    return this._props.updatedAt
   }
 }

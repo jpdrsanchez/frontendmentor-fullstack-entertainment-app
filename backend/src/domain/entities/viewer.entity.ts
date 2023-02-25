@@ -50,6 +50,6 @@ export class Viewer extends Entity<ViewerProps> {
   }
 
   public get updatedAt() {
-    return this._props.createdAt
+    return this._props.updatedAt
   }
 }
