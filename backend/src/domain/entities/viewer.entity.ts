@@ -41,6 +41,10 @@ export class Viewer extends Entity<ViewerProps> {
     return this._props.email.value
   }
 
+  public get password() {
+    return this._props.password
+  }
+
   public get imageId() {
     return this._props.imageId
   }
