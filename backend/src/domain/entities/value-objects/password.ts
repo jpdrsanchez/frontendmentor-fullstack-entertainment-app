@@ -25,7 +25,7 @@ export class Password {
     if (this.isBcryptHashed(password)) return true
 
     const strongPasswordRegex =
-      /^(?=.*\d{5,})(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=[\]{}|;:',./<>?])(?!.*\s).{15,}$/
+      /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})/
 
     return strongPasswordRegex.test(password)
   }
