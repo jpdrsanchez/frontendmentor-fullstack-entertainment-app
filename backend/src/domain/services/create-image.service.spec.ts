@@ -41,7 +41,7 @@ describe('CreateImage Domain Service', () => {
     })
 
     const image = createdImage.value as Image<
-      Partial<ImageMetadata<keyof typeof metadata>>
+      ImageMetadata<keyof typeof metadata>
     >
 
     expect(createdImage.isRight()).toBe(true)

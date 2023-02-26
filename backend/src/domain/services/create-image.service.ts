@@ -11,9 +11,9 @@ export type ImageMetadata<K extends keyof ImageThumbnails<unknown>> = Pick<
 
 export type CreateImageServiceRequest<
   K extends keyof ImageThumbnails<unknown>
-> = ImagePropsPayload<Partial<ImageMetadata<K>>>
+> = ImagePropsPayload<ImageMetadata<K>>
 export type CreateImageServiceResponse<K extends keyof ImageThumbnails<K>> =
-  Either<Error, Image<Partial<ImageMetadata<K>>>>
+  Either<Error, Image<ImageMetadata<K>>>
 
 export class CreateImageService {
   public static async execute<K extends keyof ImageThumbnails<unknown>>(
