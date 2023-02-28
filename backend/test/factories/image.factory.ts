@@ -4,6 +4,7 @@ import {
   ThumbnailSizes
 } from '@config/images.config'
 import { Image, ImageProps, Metadata } from '@domain/entities/image.entity'
+import { Title } from '@domain/entities/value-objects/title'
 import { faker } from '@faker-js/faker'
 
 export const defineImageMetadataThumbnailsData = (
@@ -35,8 +36,10 @@ export const defineImageMetadataThumbnailsData = (
 }
 
 export const imageFactory = (overrides?: Partial<ImageProps>) => {
+  const name = Title.create(faker.lorem.words(2)).value as Title
+
   return Image.create({
-    name: 'Dummy Name',
+    name,
     description: 'Dummy description',
     extension: 'webp',
     metadata: {

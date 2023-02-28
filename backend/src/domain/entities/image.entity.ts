@@ -1,5 +1,6 @@
 import { Entity } from '@core/domain/entity.core'
 import { Optional } from '@core/logic/optional.core'
+import { Title } from './value-objects/title'
 
 export interface Metadata {
   url: string
@@ -8,7 +9,7 @@ export interface Metadata {
 }
 
 export interface ImageProps {
-  name: string
+  name: Title
   description: string
   extension: string
   metadata: Record<
@@ -35,7 +36,7 @@ export class Image extends Entity<ImageProps> {
   }
 
   public get name() {
-    return this._props.name
+    return this._props.name.value
   }
 
   public get description() {
