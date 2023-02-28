@@ -1,0 +1,99 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Viewer {
+  id String @id
+
+  name     String
+  email    String @unique
+  password String
+
+  avatar  Image?  @relation(fields: [imageId], references: [id])
+  imageId String?
+
+  bookmarks Bookmark[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@map("viewers")
+}
+
+model Image {
+  id String @id
+
+  name        String
+  description String?
+  extension   String
+  metadata    Json
+
+  viewers Viewer[]
+  videos  Video[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@map("images")
+}
+
+model Video {
+  id String @id
+
+  title      String
+  year       Int
+  rating     Rating
+  isTrending Boolean
+
+  thumbnail  Image    @relation(fields: [imageId], references: [id])
+  imageId    String
+  category   Cateogry @relation(fields: [categoryId], references: [id])
+  categoryId String
+
+  bookmarkedBy Bookmark[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@map("videos")
+}
+
+model Cateogry {
+  id String @id
+
+  title String
+  slug  String @unique
+
+  videos Video[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@map("categories")
+}
+
+model Bookmark {
+  video    Video  @relation(fields: [videoId], references: [id])
+  videoId  String
+  viewer   Viewer @relation(fields: [viewerId], references: [id])
+  viewerId String
+
+  bookmarkedAt DateTime @default(now())
+
+  @@id([videoId, viewerId])
+  @@map("bookmarks")
+}
+
+enum Rating {
+  PG
+  E
+  EGP
+}
