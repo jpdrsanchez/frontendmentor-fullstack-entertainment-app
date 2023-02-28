@@ -1,7 +1,7 @@
 import { ImageThumbnails, ThumbnailSizes } from '@config/images.config'
 import { Image } from '@domain/entities/image.entity'
 import { faker } from '@faker-js/faker'
-import { CreateImageService, ImageMetadata } from './create-image.service'
+import { CreateImageService } from './create-image.service'
 
 describe('CreateImage Domain Service', () => {
   it('should be able to create an image domain entity', async () => {
@@ -40,9 +40,7 @@ describe('CreateImage Domain Service', () => {
       metadata
     })
 
-    const image = createdImage.value as Image<
-      ImageMetadata<keyof typeof metadata>
-    >
+    const image = createdImage.value as Image
 
     expect(createdImage.isRight()).toBe(true)
     expect(createdImage.value).toBeInstanceOf(Image)

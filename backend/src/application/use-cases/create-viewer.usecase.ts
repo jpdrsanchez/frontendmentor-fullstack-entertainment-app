@@ -10,7 +10,7 @@ import {
 } from '@domain/services/create-viewer.service'
 import { DuplicatedEmailException } from './exceptions/duplicated-email.exception'
 
-export type CreateViewerUseCaseRequest<T> = CreateViewerServiceRequest<T>
+export type CreateViewerUseCaseRequest = CreateViewerServiceRequest
 export type CreateViewerUseCaseResponse = Either<
   | InvalidNameException
   | InvalidEmailException
@@ -22,8 +22,8 @@ export type CreateViewerUseCaseResponse = Either<
 export class CreateViewerUseCase {
   constructor(private readonly viewersRepository: ViewersRepository) {}
 
-  async execute<T>(
-    request: CreateViewerUseCaseRequest<T>
+  async execute(
+    request: CreateViewerUseCaseRequest
   ): Promise<CreateViewerUseCaseResponse> {
     const viewerOrError = await CreateViewerService.execute(request)
     if (viewerOrError.isLeft()) return left(viewerOrError.value)

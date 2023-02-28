@@ -1,22 +1,28 @@
 import { Entity } from '@core/domain/entity.core'
 import { Optional } from '@core/logic/optional.core'
 
-export interface ImageProps<T> {
+export interface Metadata {
+  url: string
+  width: number
+  height: number
+}
+
+export interface ImageProps {
   name: string
   description: string
   extension: string
-  metadata: T
+  metadata: Record<
+    string,
+    { small: Metadata; medium: Metadata; large: Metadata }
+  >
   createdAt: Date
   updatedAt: Date
 }
 
-export type ImagePropsPayload<T> = Optional<
-  ImageProps<T>,
-  'createdAt' | 'updatedAt'
->
+export type ImagePropsPayload = Optional<ImageProps, 'createdAt' | 'updatedAt'>
 
-export class Image<T> extends Entity<ImageProps<T>> {
-  private constructor(props: ImagePropsPayload<T>) {
+export class Image extends Entity<ImageProps> {
+  private constructor(props: ImagePropsPayload) {
     super({
       ...props,
       createdAt: props.createdAt ?? new Date(),
@@ -24,8 +30,8 @@ export class Image<T> extends Entity<ImageProps<T>> {
     })
   }
 
-  public static create<T>(props: ImagePropsPayload<T>) {
-    return new Image<T>(props)
+  public static create(props: ImagePropsPayload) {
+    return new Image(props)
   }
 
   public get name() {

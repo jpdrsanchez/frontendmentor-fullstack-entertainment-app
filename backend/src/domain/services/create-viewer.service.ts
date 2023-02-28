@@ -9,10 +9,10 @@ import { Name } from '@domain/entities/value-objects/name'
 import { Password } from '@domain/entities/value-objects/password'
 import { Viewer, ViewerPropsPayload } from '@domain/entities/viewer.entity'
 
-export type CreateViewerServiceRequest<T> = Replace<
+export type CreateViewerServiceRequest = Replace<
   ViewerPropsPayload,
   'name' | 'email' | 'password' | 'createdAt' | 'updatedAt' | 'imageId',
-  { name: string; email: string; password: string; image?: Image<T> }
+  { name: string; email: string; password: string; image?: Image }
 >
 
 export type CreateViewerServiceResponse = Either<
@@ -21,8 +21,8 @@ export type CreateViewerServiceResponse = Either<
 >
 
 export class CreateViewerService {
-  public static async execute<T>(
-    request: CreateViewerServiceRequest<T>
+  public static async execute(
+    request: CreateViewerServiceRequest
   ): Promise<CreateViewerServiceResponse> {
     const nameOrError = Name.create(request.name)
     if (nameOrError.isLeft()) return left(new InvalidNameException())

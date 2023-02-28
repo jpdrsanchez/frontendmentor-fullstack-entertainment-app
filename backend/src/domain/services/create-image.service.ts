@@ -1,24 +1,13 @@
-import { ImageThumbnails, ThumbnailSizes } from '@config/images.config'
 import { Either, right } from '@core/logic/either.core'
 import { Image, ImagePropsPayload } from '@domain/entities/image.entity'
 
-export type ImageMetadata<K extends keyof ImageThumbnails<unknown>> = Pick<
-  ImageThumbnails<
-    Record<ThumbnailSizes, { width: number; height: number; url: string }>
-  >,
-  K
->
-
-export type CreateImageServiceRequest<
-  K extends keyof ImageThumbnails<unknown>
-> = ImagePropsPayload<ImageMetadata<K>>
-export type CreateImageServiceResponse<K extends keyof ImageThumbnails<K>> =
-  Either<Error, Image<ImageMetadata<K>>>
+export type CreateImageServiceRequest = ImagePropsPayload
+export type CreateImageServiceResponse = Either<Error, Image>
 
 export class CreateImageService {
-  public static async execute<K extends keyof ImageThumbnails<unknown>>(
-    request: CreateImageServiceRequest<K>
-  ): Promise<CreateImageServiceResponse<K>> {
+  public static async execute(
+    request: CreateImageServiceRequest
+  ): Promise<CreateImageServiceResponse> {
     return right(
       Image.create({
         name: request.name,

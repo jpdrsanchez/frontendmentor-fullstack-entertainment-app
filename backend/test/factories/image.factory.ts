@@ -3,15 +3,8 @@ import {
   ImageThumbnails,
   ThumbnailSizes
 } from '@config/images.config'
-import { Image, ImageProps } from '@domain/entities/image.entity'
+import { Image, ImageProps, Metadata } from '@domain/entities/image.entity'
 import { faker } from '@faker-js/faker'
-
-type ImageMetadata<T extends keyof ImageThumbnails<unknown>> = Pick<
-  ImageThumbnails<
-    Record<ThumbnailSizes, { width: number; height: number; url: string }>
-  >,
-  T
->
 
 export const defineImageMetadataThumbnailsData = (
   thumbnail: keyof ImageThumbnails<unknown>
@@ -38,15 +31,11 @@ export const defineImageMetadataThumbnailsData = (
         )
       }
     }
-  }, {} as Record<ThumbnailSizes, { width: number; height: number; url: string }>)
+  }, {} as Record<ThumbnailSizes, Metadata>)
 }
 
-export const imageFactory = <T extends keyof ImageThumbnails<unknown>>(
-  overrides?: Partial<ImageProps<ImageMetadata<T>>>
-) => {
-  return Image.create<
-    Partial<ImageMetadata<'avatar' | 'regular' | 'trending'>>
-  >({
+export const imageFactory = (overrides?: Partial<ImageProps>) => {
+  return Image.create({
     name: 'Dummy Name',
     description: 'Dummy description',
     extension: 'webp',
