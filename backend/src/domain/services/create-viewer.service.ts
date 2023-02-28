@@ -16,7 +16,7 @@ export type CreateViewerServiceRequest<T> = Replace<
 >
 
 export type CreateViewerServiceResponse = Either<
-  InvalidNameException | InvalidEmailException,
+  InvalidNameException | InvalidEmailException | InvalidPasswordException,
   Viewer
 >
 
