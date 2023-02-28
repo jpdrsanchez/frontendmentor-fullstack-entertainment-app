@@ -1,7 +1,7 @@
 import { Viewer } from '@domain/entities/viewer.entity'
 import { ViewersRepository } from '@domain/repositories/viewers.repository'
 
-export class InMemoryViewersRepository extends ViewersRepository {
+export class InMemoryViewersRepository implements ViewersRepository {
   private _viewers: Viewer[] = []
 
   public async create(viewer: Viewer) {
