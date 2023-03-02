@@ -1,6 +1,8 @@
 # project
 /uploads
+/test-uploads
 /tmp
+/test-tmp
 .env
 
 # compiled output

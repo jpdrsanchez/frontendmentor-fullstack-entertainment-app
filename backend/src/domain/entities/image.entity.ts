@@ -12,9 +12,8 @@ export interface ImageProps {
   name: Title
   description: string
   extension: string
-  metadata: Record<
-    string,
-    { small: Metadata; medium: Metadata; large: Metadata }
+  metadata: Partial<
+    Record<string, { small?: Metadata; medium?: Metadata; large?: Metadata }>
   >
   createdAt: Date
   updatedAt: Date

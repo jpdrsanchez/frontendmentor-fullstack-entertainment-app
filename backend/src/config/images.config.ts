@@ -22,8 +22,9 @@ export interface ImageThumbnails<T> {
 export interface ImageConfiguration {
   optimizationQuality: number
   allowWebp: boolean
-  tmpPath: ReturnType<typeof path.join>
-  uploadPath: ReturnType<typeof path.join>
+  tmpDir: ReturnType<typeof path.join>
+  uploadsDir: ReturnType<typeof path.join>
+  allowedFiles: string[]
   thumbnail: ImageThumbnails<
     Record<ThumbnailSizes, { width: number; height: number }>
   >
@@ -32,8 +33,9 @@ export interface ImageConfiguration {
 export const imagesConfiguration: ImageConfiguration = {
   optimizationQuality: Number(process.env.OPTIMIZATION_QUALITY) ?? 80,
   allowWebp: (process.env.ALLOW_WEBP ?? 'true') === 'true',
-  tmpPath: path.join(process.cwd(), process.env.TMP_PATH ?? 'tmp'),
-  uploadPath: path.join(process.cwd(), process.env.UPLOADS_PATH ?? 'uploads'),
+  tmpDir: path.join(process.cwd(), process.env.TMP_DIR ?? 'tmp'),
+  uploadsDir: path.join(process.cwd(), process.env.UPLOADS_DIR ?? 'uploads'),
+  allowedFiles: ['jpg', 'jpeg', 'png', 'webp'],
   thumbnail: {
     avatar: {
       small: { width: 128, height: 128 },
