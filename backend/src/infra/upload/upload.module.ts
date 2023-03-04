@@ -5,6 +5,7 @@ import globalConfig from '@config/global.config'
 
 @Module({
   providers: [ImageUploadService],
-  imports: [ConfigModule.forRoot({ load: [globalConfig] })]
+  imports: [ConfigModule.forRoot({ load: [globalConfig] })],
+  exports: [ImageUploadService]
 })
 export class UploadsModule {}

@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import * as fs from 'node:fs/promises'
-import sharp from 'sharp'
+import * as sharp from 'sharp'
 import * as crypto from 'node:crypto'
 import * as utils from 'node:util'
 import * as path from 'node:path'
@@ -116,8 +116,11 @@ export class ImageUploadService {
         request.filePath
       )) as ImageProps['metadata']
 
+      fs.unlink(request.filePath)
+
       return right(response)
     } catch (error) {
+      console.log(error)
       return left(
         new HttpException(
           {

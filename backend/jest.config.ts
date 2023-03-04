@@ -6,36 +6,16 @@ const config: Config = {
   moduleFileExtensions: ['js', 'json', 'ts'],
   testRegex: '.*\\.spec\\.ts$',
   transform: {
-    '^.+\\.(t|j)s$': [
-      '@swc/jest',
-      {
-        jsc: {
-          parser: {
-            syntax: 'typescript',
-            tsx: false,
-            decorators: true
-          },
-          target: 'es2017',
-          keepClassNames: true,
-          transform: {
-            legacyDecorator: true,
-            decoratorMetadata: true
-          }
-        },
-        module: {
-          type: 'es6',
-          noInterop: false
-        }
-      }
-    ]
+    '^.+\\.(t|j)s$': 'ts-jest'
   },
   collectCoverageFrom: ['**/*.(t|j)s'],
-  coverageDirectory: '../coverage',
+  coverageDirectory: 'coverage',
   testEnvironment: 'node',
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
     prefix: '<rootDir>/'
   }),
-  setupFiles: ['<rootDir>/jest.setup.ts']
+  setupFiles: ['<rootDir>/jest.setup.ts'],
+  preset: 'ts-jest'
 }
 
 export default config

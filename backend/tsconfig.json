@@ -19,12 +19,13 @@
     "noFallthroughCasesInSwitch": false,
     "resolveJsonModule": true,
     "paths": {
-      "@core/*":["./src/core/*"],
-      "@domain/*":["./src/domain/*"],
-      "@application/*":["./src/application/*"],
-      "@config/*":["./src/config/*"],
-      "@infra/*":["./src/infra/*"],
-      "@test/*":["./test/*"]
+      "@core/*": ["./src/core/*"],
+      "@domain/*": ["./src/domain/*"],
+      "@application/*": ["./src/application/*"],
+      "@config/*": ["./src/config/*"],
+      "@infra/*": ["./src/infra/*"],
+      "@presenters/*": ["./src/presenters/*"],
+      "@test/*": ["./test/*"]
     }
   }
 }
