@@ -15,7 +15,7 @@ export class CreateImageUseCase {
   async execute(
     request: CreateImageUseCaseRequest
   ): Promise<CreateImageUseCaseResponse> {
-    const imageOrError = await CreateImageService.execute(request)
+    const imageOrError = CreateImageService.execute(request)
     if (imageOrError.isLeft()) return left(imageOrError.value)
 
     await this.imagesRepository.create(imageOrError.value)

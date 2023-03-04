@@ -12,10 +12,10 @@ export type CreateImageServiceRequest = Replace<
 export type CreateImageServiceResponse = Either<InvalidTitleException, Image>
 
 export class CreateImageService {
-  public static async execute(
+  public static execute(
     request: CreateImageServiceRequest
-  ): Promise<CreateImageServiceResponse> {
-    const titleOrError = await Title.create(request.name)
+  ): CreateImageServiceResponse {
+    const titleOrError = Title.create(request.name)
     if (titleOrError.isLeft()) return left(titleOrError.value)
 
     return right(

@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker'
 import { CreateImageService } from './create-image.service'
 
 describe('CreateImage Domain Service', () => {
-  it('should be able to create an image domain entity', async () => {
+  it('should be able to create an image domain entity', () => {
     const name = 'Dummy Name'
     const description = 'Dummy Description'
     const extension = 'webp'
@@ -33,7 +33,7 @@ describe('CreateImage Domain Service', () => {
       }
     }
 
-    const createdImage = await CreateImageService.execute({
+    const createdImage = CreateImageService.execute({
       name,
       description,
       extension,

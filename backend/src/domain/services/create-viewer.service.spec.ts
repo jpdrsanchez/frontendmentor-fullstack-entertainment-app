@@ -3,7 +3,6 @@ import { InvalidNameException } from '@domain/entities/value-objects/exceptions/
 import { InvalidPasswordException } from '@domain/entities/value-objects/exceptions/invalid-password.exception'
 import { Viewer } from '@domain/entities/viewer.entity'
 import { faker } from '@faker-js/faker'
-import { imageFactory } from '@test/factories/image.factory'
 import { CreateViewerService } from './create-viewer.service'
 
 describe('CreateViewer Domain Service', () => {
@@ -11,13 +10,11 @@ describe('CreateViewer Domain Service', () => {
     const name = 'Dummy Name'
     const email = 'dummy@example.com'
     const password = 'fGh76432%$#*kJPoyTER'
-    const image = imageFactory()
 
     const createdViewer = await CreateViewerService.execute({
       name,
       email,
-      password,
-      image: image
+      password
     })
 
     const viewer = createdViewer.value as Viewer
@@ -27,7 +24,6 @@ describe('CreateViewer Domain Service', () => {
     expect(viewer.name).toBe(name)
     expect(viewer.email).toBe(email)
     expect(await viewer.password.compare(password)).toBe(true)
-    expect(image.id).toBe(viewer.imageId)
   })
 
   it('should not be able to create a viewer with invalid value objects', async () => {

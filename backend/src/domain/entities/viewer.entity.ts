@@ -1,6 +1,7 @@
 import { Entity } from '@core/domain/entity.core'
 import { Maybe } from '@core/logic/maybe.core'
 import { Optional } from '@core/logic/optional.core'
+import { Image } from './image.entity'
 import { Email } from './value-objects/email'
 import { Name } from './value-objects/name'
 import { Password } from './value-objects/password'
@@ -9,21 +10,21 @@ export interface ViewerProps {
   name: Name
   email: Email
   password: Password
-  imageId: Maybe<string>
+  avatar: Maybe<Image>
   createdAt: Date
   updatedAt: Date
 }
 
 export type ViewerPropsPayload = Optional<
   ViewerProps,
-  'createdAt' | 'updatedAt' | 'imageId'
+  'createdAt' | 'updatedAt' | 'avatar'
 >
 
 export class Viewer extends Entity<ViewerProps> {
   private constructor(props: ViewerPropsPayload) {
     super({
       ...props,
-      imageId: props.imageId,
+      avatar: props.avatar,
       createdAt: props.createdAt ?? new Date(),
       updatedAt: props.updatedAt ?? new Date()
     })
@@ -45,8 +46,12 @@ export class Viewer extends Entity<ViewerProps> {
     return this._props.password
   }
 
-  public get imageId() {
-    return this._props.imageId
+  public get avatar() {
+    return this._props.avatar
+  }
+
+  public set avatar(value: Image) {
+    this._props.avatar = value
   }
 
   public get createdAt() {
@@ -55,5 +60,9 @@ export class Viewer extends Entity<ViewerProps> {
 
   public get updatedAt() {
     return this._props.updatedAt
+  }
+
+  public update() {
+    this._props.updatedAt = new Date()
   }
 }

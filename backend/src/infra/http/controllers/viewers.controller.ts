@@ -1,7 +1,4 @@
-import {
-  CreateImageUseCase,
-  CreateImageUseCaseResponse
-} from '@application/use-cases/create-image.usecase'
+import { CreateImageUseCase } from '@application/use-cases/create-image.usecase'
 import { CreateViewerUseCase } from '@application/use-cases/create-viewer.usecase'
 import {
   Body,
@@ -13,22 +10,21 @@ import {
   UploadedFile,
   UseInterceptors
 } from '@nestjs/common'
-import {
-  ImageUploadService,
-  ImageUploadServiceResponse
-} from '@infra/upload/images/image-upload.service'
+import { ImageUploadService } from '@infra/upload/images/image-upload.service'
 import { CreateViewerDto } from '../dtos/create-viewer.dto'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { ConfigService } from '@nestjs/config'
 import { ImageConfiguration } from '@config/images.config'
 import { ApplicationExceptionPresenter } from '@presenters/exceptions/application.exception'
 import { CreateViewerViewModel } from '@presenters/view-models/create-viewer.view-model'
+import { AttachImageToViewerUseCase } from '@application/use-cases/attach-image-to-viewer.usecase'
 
 @Controller('viewers')
 export class ViewersController {
   constructor(
     private readonly createViewer: CreateViewerUseCase,
     private readonly createImage: CreateImageUseCase,
+    private readonly attachImageToViewer: AttachImageToViewerUseCase,
     private readonly imageUploadService: ImageUploadService,
     private readonly configService: ConfigService
   ) {}
@@ -48,44 +44,39 @@ export class ViewersController {
     )
     avatar: Express.Multer.File
   ) {
-    let imageMetaOrErrorOrNull: ImageUploadServiceResponse | null = null
-    let imageOrErrorOrNull: CreateImageUseCaseResponse | null = null
+    const viewerOrError = await this.createViewer.execute({
+      name: createViewerDto.name,
+      email: createViewerDto.email,
+      password: createViewerDto.password
+    })
+    if (viewerOrError.isLeft())
+      throw ApplicationExceptionPresenter.toHttp(viewerOrError.value)
 
-    if (avatar)
-      imageMetaOrErrorOrNull = await this.imageUploadService.execute({
+    if (avatar) {
+      const imageMetaOrError = await this.imageUploadService.execute({
         extension: avatar.mimetype.replace('image/', '').trim(),
         filePath: avatar.path,
         sizes: ['avatar'],
         uploadDir:
           this.configService.get<ImageConfiguration>('images').uploadsDir
       })
+      if (imageMetaOrError.isLeft()) throw imageMetaOrError.value
 
-    if (imageMetaOrErrorOrNull.isLeft()) throw imageMetaOrErrorOrNull.value
-    else if (imageMetaOrErrorOrNull.isRight()) {
-      imageOrErrorOrNull = await this.createImage.execute({
+      const imageOrError = await this.createImage.execute({
         name: avatar.originalname,
         description: '',
         extension: avatar.mimetype.replace('image/', '').trim(),
-        metadata: imageMetaOrErrorOrNull.value
+        metadata: imageMetaOrError.value
       })
+      if (imageOrError.isLeft())
+        throw ApplicationExceptionPresenter.toHttp(imageOrError.value)
 
-      if (imageOrErrorOrNull.isLeft())
-        throw ApplicationExceptionPresenter.toHttp(imageOrErrorOrNull.value)
+      await this.attachImageToViewer.execute({
+        viewer: viewerOrError.value,
+        image: imageOrError.value
+      })
     }
 
-    const viewerOrError = await this.createViewer.execute({
-      name: createViewerDto.name,
-      email: createViewerDto.email,
-      password: createViewerDto.password,
-      ...(imageOrErrorOrNull.isRight() && { image: imageOrErrorOrNull.value })
-    })
-
-    if (viewerOrError.isLeft())
-      throw ApplicationExceptionPresenter.toHttp(viewerOrError.value)
-
-    return CreateViewerViewModel.toHttp(
-      viewerOrError.value,
-      imageOrErrorOrNull.isRight() ? imageOrErrorOrNull.value : null
-    )
+    return CreateViewerViewModel.toHttp(viewerOrError.value)
   }
 }

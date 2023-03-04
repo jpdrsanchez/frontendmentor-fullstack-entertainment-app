@@ -1,6 +1,5 @@
 import { Either, left, right } from '@core/logic/either.core'
 import { Replace } from '@core/logic/replace.core'
-import { Image } from '@domain/entities/image.entity'
 import { Email } from '@domain/entities/value-objects/email'
 import { InvalidEmailException } from '@domain/entities/value-objects/exceptions/invalid-email.exception'
 import { InvalidNameException } from '@domain/entities/value-objects/exceptions/invalid-name.exception'
@@ -11,8 +10,8 @@ import { Viewer, ViewerPropsPayload } from '@domain/entities/viewer.entity'
 
 export type CreateViewerServiceRequest = Replace<
   ViewerPropsPayload,
-  'name' | 'email' | 'password' | 'createdAt' | 'updatedAt' | 'imageId',
-  { name: string; email: string; password: string; image?: Image }
+  'name' | 'email' | 'password' | 'createdAt' | 'updatedAt' | 'avatar',
+  { name: string; email: string; password: string }
 >
 
 export type CreateViewerServiceResponse = Either<
@@ -35,8 +34,7 @@ export class CreateViewerService {
       Viewer.create({
         name: nameOrError.value,
         email: emailOrError.value,
-        password: passwordOrError.value,
-        imageId: request.image?.id
+        password: passwordOrError.value
       })
     )
   }

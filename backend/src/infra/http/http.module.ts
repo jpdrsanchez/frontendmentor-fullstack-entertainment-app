@@ -1,3 +1,4 @@
+import { AttachImageToViewerUseCase } from '@application/use-cases/attach-image-to-viewer.usecase'
 import { CreateImageUseCase } from '@application/use-cases/create-image.usecase'
 import { CreateViewerUseCase } from '@application/use-cases/create-viewer.usecase'
 import globalConfig from '@config/global.config'
@@ -43,6 +44,13 @@ import { ViewersController } from './controllers/viewers.controller'
         return new CreateImageUseCase(imagesRepository)
       },
       inject: [PrismaImagesRepository]
+    },
+    {
+      provide: AttachImageToViewerUseCase,
+      useFactory: (viewersRepository: ViewersRepository) => {
+        return new AttachImageToViewerUseCase(viewersRepository)
+      },
+      inject: [PrismaViewersRepository]
     }
   ]
 })
