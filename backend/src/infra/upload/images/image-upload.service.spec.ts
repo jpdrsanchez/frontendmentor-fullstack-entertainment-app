@@ -38,6 +38,10 @@ describe('ImageUpload Service', () => {
       force: true,
       recursive: true
     })
+    await fs.rm(path.join(process.cwd(), process.env.TMP_DIR), {
+      force: true,
+      recursive: true
+    })
   })
 
   it('should be able to resize the provided image correctly', async () => {
@@ -67,6 +71,11 @@ describe('ImageUpload Service', () => {
     expect(metadata.regular).not.toBeDefined()
     expect(uploadsDir).toEqual(expect.arrayContaining(metadataToArray))
     expect(uploadsDir).toHaveLength(3)
+
+    await fs.copyFile(
+      path.join(process.cwd(), 'test/utils/images/placeholder.jpg'),
+      path.join(process.cwd(), process.env.TMP_DIR, 'placeholder.jpg')
+    )
 
     response = await imageUploadService.execute({
       extension: 'jpg',

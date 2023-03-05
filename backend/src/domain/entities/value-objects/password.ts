@@ -2,7 +2,7 @@ import { Either, left, right } from '@core/logic/either.core'
 import { InvalidPasswordException } from './exceptions/invalid-password.exception'
 import * as bcrypt from 'bcrypt'
 
-type CreatePasswordResponse = Either<InvalidPasswordException, Password>
+export type CreatePasswordResponse = Either<InvalidPasswordException, Password>
 
 export class Password {
   private readonly _value: string

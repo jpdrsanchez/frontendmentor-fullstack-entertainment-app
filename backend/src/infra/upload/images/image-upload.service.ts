@@ -96,6 +96,7 @@ export class ImageUploadService {
       }
       thumbnailResponse = { ...thumbnailResponse, [thumbnail]: sizeResponse }
     }
+
     return thumbnailResponse
   }
 
@@ -120,7 +121,6 @@ export class ImageUploadService {
 
       return right(response)
     } catch (error) {
-      console.log(error)
       return left(
         new HttpException(
           {
