@@ -47,7 +47,11 @@ export class ImageUploadService {
     const configuration = this.configService.get<ImageConfiguration>('images')
     const image = sharp(pathname).toFormat(
       configuration.allowWebp ? 'webp' : 'jpg',
-      { quality: configuration.optimizationQuality }
+      {
+        quality: isNaN(Number(configuration.optimizationQuality))
+          ? 80
+          : Number(configuration.optimizationQuality)
+      }
     )
     const metadata = await sharp(pathname).metadata()
 

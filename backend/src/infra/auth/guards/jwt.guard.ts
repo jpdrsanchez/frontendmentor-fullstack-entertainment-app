@@ -9,7 +9,7 @@ import { Request } from 'express'
 import * as jwt from 'jsonwebtoken'
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class JWTGuard implements CanActivate {
   private readonly tokenRegex: RegExp
 
   constructor(private readonly configService: ConfigService) {
@@ -18,6 +18,7 @@ export class AuthGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest<Request>()
+
     if (!this.tokenRegex.test(request.headers.authorization || ''))
       throw new UnauthorizedException()
 

@@ -22,8 +22,6 @@ export class Password {
   }
 
   private static validate(password: string) {
-    if (this.isBcryptHashed(password)) return true
-
     const strongPasswordRegex =
       /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})/
 
@@ -33,7 +31,9 @@ export class Password {
   public static async create(
     password: string
   ): Promise<CreatePasswordResponse> {
+    if (this.isBcryptHashed(password)) return right(new Password(password))
     if (!this.validate(password)) return left(new InvalidPasswordException())
+
     const hashedPassword = await this.hash(password)
 
     return right(new Password(hashedPassword))

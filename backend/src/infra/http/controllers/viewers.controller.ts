@@ -4,13 +4,10 @@ import {
   Body,
   Controller,
   FileTypeValidator,
-  Get,
   MaxFileSizeValidator,
   ParseFilePipe,
   Post,
-  Request,
   UploadedFile,
-  UseGuards,
   UseInterceptors
 } from '@nestjs/common'
 import { ImageUploadService } from '@infra/upload/images/image-upload.service'
@@ -21,7 +18,6 @@ import { ImageConfiguration } from '@config/images.config'
 import { ApplicationExceptionPresenter } from '@presenters/exceptions/application.exception'
 import { CreateViewerViewModel } from '@presenters/view-models/create-viewer.view-model'
 import { AttachImageToViewerUseCase } from '@application/use-cases/attach-image-to-viewer.usecase'
-import { AuthGuard } from '@infra/auth/guards/jwt.guard'
 
 @Controller('viewers')
 export class ViewersController {
@@ -82,12 +78,5 @@ export class ViewersController {
     }
 
     return CreateViewerViewModel.toHttp(viewerOrError.value)
-  }
-
-  @UseGuards(AuthGuard)
-  @Get()
-  async me(@Request() request) {
-    console.log(request)
-    return request.auth
   }
 }

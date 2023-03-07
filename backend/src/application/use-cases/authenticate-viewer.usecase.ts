@@ -16,15 +16,19 @@ export type AuthenticateViewerUseCaseResponse = Either<
 export class AuthenticateViewerUseCase {
   constructor(private readonly viewersRepository: ViewersRepository) {}
 
-  async execute(request: AuthenticateViewerUseCaseRequest) {
+  async execute(
+    request: AuthenticateViewerUseCaseRequest
+  ): Promise<AuthenticateViewerUseCaseResponse> {
     const viewerOrEmpty = await this.viewersRepository.findByEmail(
       request.email
     )
+
     if (!viewerOrEmpty) return left(new IncorrectCredentialsException())
 
     const comparedPassword = await viewerOrEmpty.password.compare(
       request.password
     )
+
     if (!comparedPassword) return left(new IncorrectCredentialsException())
 
     return right(viewerOrEmpty)
